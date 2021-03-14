@@ -1,7 +1,8 @@
 /**
  * Gets the repositories of the user from Github
  */
- import swal from 'sweetalert2'
+import swal from 'sweetalert2'
+import services from './services'
 
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import {
@@ -21,7 +22,8 @@ import {
   makeSelectTaskEdit,
 } from './selectors';
 import { CREATE_TASK } from './constants';
-import{getList} from '../../utils/requestToDoList'
+import { getList, DeleteList, addList, updateList } from '../../utils/requestToDoList'
+import { da } from 'date-fns/locale';
 /**
  * Root saga manages watcher lifecycle
  */
@@ -39,81 +41,41 @@ export default function* githubData() {
  * Github repos request/response handler
  */
 export function* createTask() {
-  // Select username from store
   const todoList = yield select(makeSelectAddPage());
-  // const dataInit = yield select(makeSelectData());
 
-  // const data = { description: todoList, _id: Math.random() };
-  // const dataNew = [...dataInit, data];
-  // const { hello } = todoList;
   try {
-    yield axios({
-      method: 'post',
-      url: 'https://api-nodejs-todolist.herokuapp.com/task',
-      headers: {
-        Authorization:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjc2ZTQzN2E2YTY3MzAwMTc0NzFjNmIiLCJpYXQiOjE2MDE2MjcxOTJ9.x6hiHZB6izKaoLB5RRKKeqX-J5TlqtFJMDu2NVtl5ak',
-      },
-      data: {
-        description: todoList,
-      },
-    });
-    swal.fire(
-      'Complete',
-      'Add sucessfull',
-      'success'
+    yield call(services.addList, todoList);
+    if(todoList === ''){
+      swal.fire(
+        'ERROR',
+        '',
+        'warning'
+      )
+    }else{
+      swal.fire(
+        '',
+        `Thêm Thành Công`,
+        'success'
     )
-    const requestURL = yield axios({
-      method: 'get',
-      url: 'https://api-nodejs-todolist.herokuapp.com/task',
-      headers: {
-        Authorization:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjc2ZTQzN2E2YTY3MzAwMTc0NzFjNmIiLCJpYXQiOjE2MDE2MjcxOTJ9.x6hiHZB6izKaoLB5RRKKeqX-J5TlqtFJMDu2NVtl5ak',
-      },
-    });
-    console.log(requestURL.data)
-    yield put(loadData(requestURL.data.data));
+    }
+ 
+    yield call(loadDataRespo);
+
+    // yield put(loadData(requestURL.data.data));
     // yield put(loadData(requestURL.data.data));
   } catch (err) {
-    swal.fire(
-      'ERROR',
-      '',
-      'warning'
-    )
+  
     yield put(repoLoadingError(err));
 
   }
 }
-// export function* getRepos() {
-//   // Select username from store
-//   const username = yield select(makeSelectUsername());
-//   const requestURL = `https://api.github.com/users/${username}/repos?type=all&sort=updated`;
 
-//   try {
-//     // Call our request helper (see 'utils/request')
-//     const repos = yield call(request, requestURL);
-//     yield put(reposLoaded(repos, username));
-//   } catch (err) {
-//     yield put(repoLoadingError(err));
-//   }
-// }
 
 export function* loadDataRespo() {
   try {
-  const requestURL = yield axios({
-    method: 'get',
-    url: 'https://api-nodejs-todolist.herokuapp.com/task',
-    headers: {
-      Authorization:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjc2ZTQzN2E2YTY3MzAwMTc0NzFjNmIiLCJpYXQiOjE2MDE2MjcxOTJ9.x6hiHZB6izKaoLB5RRKKeqX-J5TlqtFJMDu2NVtl5ak',
-    },
-  });
-  
-  
-  
-    // const repos = yield call(requst,getList)
+
+    const requestURL = yield call(services.getList)
     yield put(loadData(requestURL.data.data));
-    // Call our request helper (see 'utils/request')
   } catch (err) {
     yield put(repoLoadingError(err));
   }
@@ -123,30 +85,16 @@ export function* deleteTaskById() {
   const idTask = yield select(makeSelectGetTaskById());
 
   try {
-    yield axios({
-      method: 'delete',
-      url: `https://api-nodejs-todolist.herokuapp.com/task/${idTask}`,
-      headers: {
-        Authorization:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjc2ZTQzN2E2YTY3MzAwMTc0NzFjNmIiLCJpYXQiOjE2MDE2MjcxOTJ9.x6hiHZB6izKaoLB5RRKKeqX-J5TlqtFJMDu2NVtl5ak',
-      },
-    });
+
+    yield call(services.deleteList, idTask);
     swal.fire(
-      'Complete',
-      'Delete sucessfull',
+      '',
+      `Xóa Thành Công`,
       'success'
     )
-    const requestURL = yield axios({
-      method: 'get',
-      url: 'https://api-nodejs-todolist.herokuapp.com/task',
-      headers: {
-        Authorization:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjc2ZTQzN2E2YTY3MzAwMTc0NzFjNmIiLCJpYXQiOjE2MDE2MjcxOTJ9.x6hiHZB6izKaoLB5RRKKeqX-J5TlqtFJMDu2NVtl5ak',
-      },
-    });
-    yield put(loadData(requestURL.data.data));
-    // Call our request helper (see 'utils/request')
+    yield call(loadDataRespo)
   } catch (err) {
+    console.log(err)
     yield put(repoLoadingError(err));
   }
 }
@@ -156,33 +104,16 @@ export function* updateTaskById() {
   const taskDes = yield select(makeSelectTaskEdit());
 
   try {
-    yield axios({
-      method: 'put',
-      url: `https://api-nodejs-todolist.herokuapp.com/task/${idTaskEdit}`,
-      headers: {
-        Authorization:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjc2ZTQzN2E2YTY3MzAwMTc0NzFjNmIiLCJpYXQiOjE2MDE2MjcxOTJ9.x6hiHZB6izKaoLB5RRKKeqX-J5TlqtFJMDu2NVtl5ak',
-      },
-      data: {
-        description: taskDes,
-      },
-    });
+    yield call(updateList, idTaskEdit, taskDes);
     swal.fire(
-      'Complete',
-      'Update sucessfull',
+      '',
+      `Update Thành Công`,
       'success'
-    )
-    const requestURL = yield axios({
-      method: 'get',
-      url: 'https://api-nodejs-todolist.herokuapp.com/task',
-      headers: {
-        Authorization:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjc2ZTQzN2E2YTY3MzAwMTc0NzFjNmIiLCJpYXQiOjE2MDE2MjcxOTJ9.x6hiHZB6izKaoLB5RRKKeqX-J5TlqtFJMDu2NVtl5ak',
-      },
-    });
-    yield put(loadData(requestURL.data.data));
-    // Call our request helper (see 'utils/request')
+  )
+    yield call(loadDataRespo)
+
   } catch (err) {
+    console.log(err)
     yield put(repoLoadingError(err));
   }
 }

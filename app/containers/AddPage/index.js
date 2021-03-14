@@ -4,6 +4,8 @@
  *
  * List all the features
  */
+import swal from 'sweetalert2'
+
 import React, { memo, useEffect,useState } from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
@@ -137,6 +139,23 @@ export function AddPage({
     setOpen(false);
     submitUpdateTask()
   }
+  //xóa 
+  const handleDelete =(id)=>{
+    swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteList(id);
+        // loadDataDefault();
+      }
+    })
+  }
   return (
     <div className={classes.root}>
             <Grid container spacing={2}  >
@@ -159,10 +178,10 @@ export function AddPage({
                       
                           <ListItemText primary={List.description} />
                           <ListItemSecondaryAction>
-                          <IconButton aria-label="edit" color="primary">
-                                  <EditIcon onClick={()=>{handleOpenEdit(List.description,List._id)}}></EditIcon>
+                          <IconButton onClick={()=>{handleOpenEdit(List.description,List._id)}} aria-label="edit" color="primary">
+                                  <EditIcon ></EditIcon>
                               </IconButton>
-                              <IconButton onClick={()=>{deleteList(List._id)}} aria-label="delete" color="default">
+                              <IconButton onClick={()=>{handleDelete(List._id)}} aria-label="delete" color="default">
                                   <DeleteIcon></DeleteIcon>
                               </IconButton>
                           </ListItemSecondaryAction>
