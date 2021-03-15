@@ -30,5 +30,5 @@ export const CHANGE_EDIT_TASK = 'boilerplate/Home/CHANGE_EDIT_TASK';
 export const UPDATE_TASK = 'boilerplate/Home/UPDATE_TASK';
 export const CREATE_TASK = 'boilerplate/Home/CREATE_TASK';
 export const CREATE_TASK_LOAD = 'boilerplate/Home/CREATE_TASK_LOAD';
-
+export const DELETE_TASK_LOAD = 'boilerplate/Home/DELETE_TASK_LOAD';
 

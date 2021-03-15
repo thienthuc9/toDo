@@ -1,29 +1,42 @@
-import { getList, deleteList,updateList,addList } from '../../utils/requestToDoList';
+import { excute } from '../../utils/requestAxios';
 
 const API = {
     getList: (param) => {
 
-        return getList(param).then((res) => {
+        return excute(
+            'get',
+            'task',
+        ).then((res) => {
             return res;
         })
     },
-    deleteList: (param) => {
-
-        return deleteList(param).then((res) => {
-
+    deleteList: (idTask) => {
+        return excute('DELETE', `task/${idTask}`).then((res) => {
             return res;
         })
     },
-    updateList: (param,task) => {
+    updateList: (idTask,infoTask) => {
         
-        return updateList(param,task).then((res) => {
+        return excute(
+            'PUT',
+            `task/${idTask}`,
+            {
+                description: infoTask,
+            }
+        ).then((res) => {
         
             return res;
         })
     },
-    addList: (param) => {
+    addList: (todoList) => {
 
-        return addList(param).then((res) => {
+        return excute(
+            'POST',
+            'task',
+            {
+                description: todoList,
+            }
+        ).then((res) => {
 
             return res;
         })

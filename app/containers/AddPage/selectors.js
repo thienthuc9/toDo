@@ -18,11 +18,11 @@ const makeSelectData = () =>
     todoListReducer => todoListReducer.todoArray,
   );
 
-// const makeSelectLoading = () =>
-//   createSelector(
-//     selectAddPage,
-//     todoListReducer => todoListReducer.loading,
-//   );
+const makeSelectLoading = () =>
+  createSelector(
+    selectAddPage,
+    todoListReducer => todoListReducer.loading,
+  );
 
 // const makeSelectError = () =>
 //   createSelector(
@@ -55,4 +55,5 @@ export {
   makeSelectGetTaskById,
   makeSelectTaskIdEdit,
   makeSelectTaskEdit,
+  makeSelectLoading
 };

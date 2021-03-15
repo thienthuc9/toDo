@@ -9,6 +9,7 @@ import {
   DELETE_TASK,
   LOADING_DATA,
   UPDATE_TASK,
+  DELETE_TASK_LOAD,
 } from 'containers/AddPage/constants';
 import { repoLoadingError, loadData } from 'containers/AddPage/actions';
 
@@ -30,7 +31,7 @@ export default function* githubData() {
   // It will be cancelled automatically on component unmount
   yield takeLatest(LOADING_DATA, loadDataRespo);
   yield takeLatest(CREATE_TASK, createTask);
-  yield takeLatest(DELETE_TASK, deleteTaskById);
+  yield takeLatest(DELETE_TASK_LOAD, deleteTaskById);
   yield takeLatest(UPDATE_TASK, updateTaskById);
 }
 /**
@@ -41,6 +42,8 @@ export function* createTask() {
 
   try {
     yield call(services.addList, todoList);
+        // yield put(loadData(requestURL.data.data));
+
     if (todoList === '') {
       swal.fire(
         'ERROR',
@@ -54,7 +57,7 @@ export function* createTask() {
         'success'
       )
     }
-
+    
     yield call(loadDataRespo);
 
     // yield put(loadData(requestURL.data.data));
@@ -79,7 +82,7 @@ export function* loadDataRespo() {
 
 export function* deleteTaskById() {
   const idTask = yield select(makeSelectGetTaskById());
-
+  // console.log(idTask)
   try {
 
     yield call(services.deleteList, idTask);

@@ -22,7 +22,7 @@ import {
   LOAD_REPOS_ERROR,
   LOAD_DATA,
   LOADING_DATA,
-  LOAD_DATA_APPEND,
+  DELETE_TASK_LOAD,
   SELECTED_TASK_BY_ID,
   UPDATE_TASK,
   CREATE_TASK,
@@ -37,11 +37,11 @@ import {
  *
  * @return {object} An action object with a type of CHANGE_TODO
  */
-export function ChangeInputTodo(inputTodo) {
-  console.log('test',inputTodo)
+export function changeInputTodo(payload) {
+  // console.log('test',inputTodo)
   return {
     type: CHANGE_TODO,
-    inputTodo,
+    payload,
    
   };
 }
@@ -56,12 +56,20 @@ export function loadRepos() {
     type: LOAD_REPOS,
   };
 }
-export function Delete(id) {
+// payload
+export function deleteTask(payload) {
   return {
     type: DELETE_TASK,
-    id
+    payload
   };
 }
+export function deleteTaskLoad() {
+  return {
+    type: DELETE_TASK_LOAD,
+    
+  };
+}
+
 
 export function loadingData() {
   return {
@@ -69,13 +77,13 @@ export function loadingData() {
   };
 }
 
-export function loadData(data) {
+export function loadData(payload) {
   return {
     type: LOAD_DATA,
-    data,
+    payload,
   };
 }
-export function Create() {
+export function createTask() {
   return {
     type: CREATE_TASK,
     
@@ -110,13 +118,20 @@ export function repoLoadingError(error) {
 //   };
 // }
 
-export function selectedTaskId(id) {
+export function selectedTaskId(payload) {
   return {
     type: SELECTED_TASK_BY_ID,
-    id,
+    payload,
   };
 }
 
+
+
+export function updateTask() {
+  return {
+    type: UPDATE_TASK,
+  };
+}
 export function changeEditTask(data, id) {
   console.log(data,id)
   return {
@@ -125,10 +140,4 @@ export function changeEditTask(data, id) {
     id,
   };
   
-}
-
-export function updateTask() {
-  return {
-    type: UPDATE_TASK,
-  };
 }
