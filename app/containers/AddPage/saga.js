@@ -7,13 +7,10 @@ import services from './services'
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import {
   DELETE_TASK,
-  LOAD_REPOS,
   LOADING_DATA,
-  SELECTED_TASK_BY_ID,
   UPDATE_TASK,
 } from 'containers/AddPage/constants';
 import { repoLoadingError, loadData } from 'containers/AddPage/actions';
-import axios from 'axios';
 
 import {
   makeSelectAddPage,
@@ -22,7 +19,6 @@ import {
   makeSelectTaskEdit,
 } from './selectors';
 import { CREATE_TASK } from './constants';
-import { getList, DeleteList, addList, updateList } from '../../utils/requestToDoList'
 import { da } from 'date-fns/locale';
 /**
  * Root saga manages watcher lifecycle
@@ -45,26 +41,26 @@ export function* createTask() {
 
   try {
     yield call(services.addList, todoList);
-    if(todoList === ''){
+    if (todoList === '') {
       swal.fire(
         'ERROR',
         '',
         'warning'
       )
-    }else{
+    } else {
       swal.fire(
         '',
         `Thêm Thành Công`,
         'success'
-    )
+      )
     }
- 
+
     yield call(loadDataRespo);
 
     // yield put(loadData(requestURL.data.data));
     // yield put(loadData(requestURL.data.data));
   } catch (err) {
-  
+
     yield put(repoLoadingError(err));
 
   }
@@ -102,14 +98,13 @@ export function* deleteTaskById() {
 export function* updateTaskById() {
   const idTaskEdit = yield select(makeSelectTaskIdEdit());
   const taskDes = yield select(makeSelectTaskEdit());
-
   try {
-    yield call(updateList, idTaskEdit, taskDes);
+    yield call(services.updateList, idTaskEdit, taskDes);
     swal.fire(
       '',
       `Update Thành Công`,
       'success'
-  )
+    )
     yield call(loadDataRespo)
 
   } catch (err) {

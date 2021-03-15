@@ -18,17 +18,17 @@ const makeSelectData = () =>
     todoListReducer => todoListReducer.todoArray,
   );
 
-const makeSelectLoading = () =>
-  createSelector(
-    selectAddPage,
-    todoListReducer => todoListReducer.loading,
-  );
+// const makeSelectLoading = () =>
+//   createSelector(
+//     selectAddPage,
+//     todoListReducer => todoListReducer.loading,
+//   );
 
-const makeSelectError = () =>
-  createSelector(
-    selectAddPage,
-    todoListReducer => todoListReducer.error,
-  );
+// const makeSelectError = () =>
+//   createSelector(
+//     selectAddPage,
+//     todoListReducer => todoListReducer.error,
+//   );
 
 const makeSelectGetTaskById = () =>
   createSelector(
@@ -52,8 +52,6 @@ export {
   selectAddPage,
   makeSelectAddPage,
   makeSelectData,
-  makeSelectLoading,
-  makeSelectError,
   makeSelectGetTaskById,
   makeSelectTaskIdEdit,
   makeSelectTaskEdit,

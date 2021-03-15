@@ -61,7 +61,8 @@ export function addList(todoList) {
 
 
 }
-export function updateList(idTaskEdit, taskDes) {
+export function updateList(idTaskEdit,taskDes) {
+  console.log('test',taskDes)
   return Axios({
     method: 'put',
     url: `https://api-nodejs-todolist.herokuapp.com/task/${idTaskEdit}`,

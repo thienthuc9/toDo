@@ -11,10 +11,8 @@ import produce from 'immer';
 import {
   DELETE_TASK,
   CHANGE_TODO,
-  LOAD_REPOS,
   LOAD_DATA,
   LOADING_DATA,
-  LOAD_REPOS_ERROR,
   LOAD_DATA_APPEND,
   SELECTED_TASK_BY_ID,
   DELETE_TASK_BY_ID,
@@ -43,16 +41,13 @@ const addPageReducer = (state = initialState, action) =>
       case CHANGE_TODO:
         draft.todoList = action.inputTodo;
         break;
-  
+      // case LOADING_DATA:
+      //   draft.loading = true;
+      //   draft.error = false;
       case LOAD_DATA:
         draft.loading = false;
         draft.todoArray = action.data;
         break;
-      case LOAD_DATA_APPEND:
-        draft.todoArray = action.data;
-        draft.loading = false;
-        break;
-
       case DELETE_TASK_BY_ID:
         draft.loading = false;
         draft.idSelected = action.id;
@@ -68,7 +63,7 @@ const addPageReducer = (state = initialState, action) =>
       case UPDATE_TASK:
         draft.loading = true;
         draft.error = false;
-      
+
 
     }
   });

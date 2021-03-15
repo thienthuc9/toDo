@@ -14,10 +14,10 @@ const API = {
             return res;
         })
     },
-    updateList: (param) => {
+    updateList: (param,task) => {
         
-        return updateList(param).then((res) => {
-            // console.log(res)
+        return updateList(param,task).then((res) => {
+        
             return res;
         })
     },

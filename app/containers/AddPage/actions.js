@@ -103,12 +103,12 @@ export function repoLoadingError(error) {
   };
 }
 
-export function loadDataAppend(data) {
-  return {
-    type: LOAD_DATA_APPEND,
-    data,
-  };
-}
+// export function loadDataAppend(data) {
+//   return {
+//     type: LOAD_DATA_APPEND,
+//     data,
+//   };
+// }
 
 export function selectedTaskId(id) {
   return {
