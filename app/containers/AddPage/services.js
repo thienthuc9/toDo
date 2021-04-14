@@ -15,8 +15,8 @@ const API = {
             return res;
         })
     },
-    updateList: (idTask,infoTask) => {
-        
+    updateList: (idTask, infoTask) => {
+
         return excute(
             'PUT',
             `task/${idTask}`,
@@ -24,7 +24,7 @@ const API = {
                 description: infoTask,
             }
         ).then((res) => {
-        
+
             return res;
         })
     },
